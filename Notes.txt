@@ -1,0 +1,29 @@
+//How to create Frontend Folder?
+1.cd Frontend  -> Taaki React project isi folder ke andar create ho.
+2.npm create vite@latest . (React project create kiya)
+  Isme humne select kiya:
+  Framework → React
+  Variant → JavaScript
+  Linter → ESLint
+3.npm install (Dependencies install hui)
+  Ye command Vite project ke required packages install karti hai.
+4.npm install tailwindcss @tailwindcss/vite (Tailwind CSS install kiya)
+5.vite.config.js (configure kiya)
+  import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
+})
+
+6.src/index.css  (me Tailwind import kiya)
+  @import "tailwindcss";
+7.main.jsx me CSS import hua
+import './index.css'
+8. Project run kiya
+  Project run kiya
+(Last me ham App.jsx me chhota sa code likh ke dekhenge ki vo run ho raha h ki nahi , code likh ke npm run dev karte h )
