@@ -946,3 +946,71 @@ ul { margin: 0; padding: 0; list-style: none; }
 .past-appt-name { color: var(--primary); font-weight: 600; }
 .past-appt-name span { color: var(--muted-fg); font-weight: 400; }
 .past-appt-date { color: var(--muted-fg); font-size: 13px; }
+
+
+/* ===================== HEALTHCARE NEAR ME ===================== */
+.nearby-header-row { margin-bottom: 20px; }
+.nearby-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+.nearby-sub { font-size: 13px; color: var(--muted-fg); margin-top: 4px; }
+
+.nearby-search-row {
+  display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.nearby-input {
+  flex: 1;
+  min-width: 200px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 16px;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  color: var(--fg);
+  background: var(--card);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.nearby-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(31, 154, 168, 0.15);
+}
+
+.suggested-dept-box {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--primary-soft);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+.suggested-dept-icon { color: var(--primary); flex-shrink: 0; margin-top: 2px; }
+.suggested-dept-title { font-size: 14px; font-weight: 700; color: var(--accent-fg); }
+.suggested-dept-text { font-size: 13px; color: var(--accent-fg); margin-top: 4px; line-height: 1.5; }
+.suggested-dept-text strong { font-weight: 700; }
+
+.nearby-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 700px) { .nearby-grid { grid-template-columns: 1fr; } }
+
+.place-card { padding: 18px; }
+.place-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.place-card-left { display: flex; align-items: center; gap: 12px; }
+.place-icon {
+  width: 42px; height: 42px; border-radius: 10px;
+  background: var(--primary-soft); color: var(--primary);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.place-name { font-size: 15px; font-weight: 700; }
+.place-type { font-size: 12.5px; color: var(--muted-fg); margin-top: 1px; }
+
+.place-rating {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #fef3c7; color: #b45309;
+  font-size: 12px; font-weight: 700; padding: 4px 9px; border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.place-meta-row {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
+}
+.place-meta-left { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.place-meta-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted-fg); }
+.place-meta-item svg { flex-shrink: 0; }

@@ -4,6 +4,7 @@ import ConsultationPrep from "./dashboard/ConsultationPrep";
 import ReportExplainer from "./dashboard/ReportExplainer";
 import VisitMemory from "./dashboard/VisitMemory";
 import Appointments from "./dashboard/Appointments";
+import HealthcareNearMe from "./dashboard/HealthcareNearMe";
 import {
   HeartPulse, LayoutGrid, Bot, ClipboardList, FileText, NotebookPen,
   CalendarDays, MapPin, LineChart, Users, Stethoscope, PanelLeft,
@@ -97,7 +98,8 @@ export default function Dashboard() {
             {active === "reports" && <ReportExplainer />}
             {active === "memory" && <VisitMemory />}
             {active === "appointments" && <Appointments />}
-            {active !== "overview" && active !== "assistant" && active !== "prep" && active !== "reports" && active !== "memory" && active !== "appointments" &&(
+            {active === "nearby" && <HealthcareNearMe />}
+            {active !== "overview" && active !== "assistant" && active !== "prep" && active !== "reports" && active !== "memory" && active !== "appointments" && active !== "nearby" &&(
               <div style={{ color: "var(--muted-fg)", fontSize: 14 }}>
                 "{patientNav.find((n) => n.key === active)?.label}" page — coming soon.
               </div>
