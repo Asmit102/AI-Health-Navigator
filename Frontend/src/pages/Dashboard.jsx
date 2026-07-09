@@ -5,6 +5,9 @@ import ReportExplainer from "./dashboard/ReportExplainer";
 import VisitMemory from "./dashboard/VisitMemory";
 import Appointments from "./dashboard/Appointments";
 import HealthcareNearMe from "./dashboard/HealthcareNearMe";
+import HealthTimeline from "./dashboard/HealthTimeline";
+import FamilyRecords from "./dashboard/FamilyRecords";
+import DoctorDashboard from "./dashboard/DoctorDashboard";
 import {
   HeartPulse, LayoutGrid, Bot, ClipboardList, FileText, NotebookPen,
   CalendarDays, MapPin, LineChart, Users, Stethoscope, PanelLeft,
@@ -64,10 +67,13 @@ export default function Dashboard() {
 
         <div className="dash-nav-label">Care Team</div>
         <nav className="dash-nav">
-          <div className="dash-nav-item">
-            <Stethoscope size={17} />
-            Doctor Dashboard
-          </div>
+            <div
+              className={`dash-nav-item ${active === "doctor" ? "active" : ""}`}
+              onClick={() => handleNavClick("doctor")}
+            >
+              <Stethoscope size={17} />
+              Doctor Dashboard
+        </div>
         </nav>
 
         <div className="dash-sidebar-footer">
@@ -99,7 +105,11 @@ export default function Dashboard() {
             {active === "memory" && <VisitMemory />}
             {active === "appointments" && <Appointments />}
             {active === "nearby" && <HealthcareNearMe />}
-            {active !== "overview" && active !== "assistant" && active !== "prep" && active !== "reports" && active !== "memory" && active !== "appointments" && active !== "nearby" &&(
+            {active === "timeline" && <HealthTimeline />}
+            {active === "family" && <FamilyRecords />}
+            {active === "doctor" && <DoctorDashboard />}
+
+            {active !== "overview" && active !== "assistant" && active !== "prep" && active !== "reports" && active !== "memory" && active !== "appointments" && active !== "nearby" && active !== "timeline" && active !== "family" && active!=="doctor" && (
               <div style={{ color: "var(--muted-fg)", fontSize: 14 }}>
                 "{patientNav.find((n) => n.key === active)?.label}" page — coming soon.
               </div>
