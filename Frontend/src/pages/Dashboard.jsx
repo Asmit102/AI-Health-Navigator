@@ -3,6 +3,7 @@ import AiAssistant from "./dashboard/AiAssistant";
 import ConsultationPrep from "./dashboard/ConsultationPrep";
 import ReportExplainer from "./dashboard/ReportExplainer";
 import VisitMemory from "./dashboard/VisitMemory";
+import Appointments from "./dashboard/Appointments";
 import {
   HeartPulse, LayoutGrid, Bot, ClipboardList, FileText, NotebookPen,
   CalendarDays, MapPin, LineChart, Users, Stethoscope, PanelLeft,
@@ -95,7 +96,8 @@ export default function Dashboard() {
             {active === "prep" && <ConsultationPrep />}
             {active === "reports" && <ReportExplainer />}
             {active === "memory" && <VisitMemory />}
-            {active !== "overview" && active !== "assistant" && active !== "prep" && active !== "reports" && active !== "memory" && (
+            {active === "appointments" && <Appointments />}
+            {active !== "overview" && active !== "assistant" && active !== "prep" && active !== "reports" && active !== "memory" && active !== "appointments" &&(
               <div style={{ color: "var(--muted-fg)", fontSize: 14 }}>
                 "{patientNav.find((n) => n.key === active)?.label}" page — coming soon.
               </div>

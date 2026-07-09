@@ -891,3 +891,58 @@ ul { margin: 0; padding: 0; list-style: none; }
   padding: 12px 14px; font-size: 13.5px; color: var(--fg);
 }
 .visit-med-item svg { color: var(--primary); flex-shrink: 0; }
+
+/* ===================== APPOINTMENTS ===================== */
+.appt-header-row {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+}
+.appt-page-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+.appt-page-sub { font-size: 13px; color: var(--muted-fg); margin-top: 4px; }
+
+.appt-upcoming-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+@media (max-width: 1100px) { .appt-upcoming-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 700px) { .appt-upcoming-grid { grid-template-columns: 1fr; } }
+
+.appt-card { padding: 20px; }
+.appt-card-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.mode-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 999px;
+  text-transform: lowercase;
+}
+.mode-badge.in-person { background: var(--primary-soft); color: var(--accent-fg); }
+.mode-badge.video { background: #e0f2fe; color: #0284c7; }
+.appt-date-label { font-size: 12px; color: var(--muted-fg); font-weight: 600; }
+
+.appt-card-doctor { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+.appt-card-specialty { font-size: 13px; color: var(--primary); margin-bottom: 14px; }
+
+.appt-detail-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted-fg); margin-bottom: 8px;
+}
+.appt-detail-row svg { flex-shrink: 0; color: var(--muted-fg); }
+
+.appt-card-actions { display: flex; gap: 10px; margin-top: 16px; }
+.appt-card-actions .btn { flex: 1; justify-content: center; }
+
+/* Past appointments */
+.past-appt-list { display: flex; flex-direction: column; }
+.past-appt-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.past-appt-item:last-child { border-bottom: none; }
+.past-appt-name { color: var(--primary); font-weight: 600; }
+.past-appt-name span { color: var(--muted-fg); font-weight: 400; }
+.past-appt-date { color: var(--muted-fg); font-size: 13px; }
