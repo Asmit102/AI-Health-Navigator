@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AiAssistant from "./dashboard/AiAssistant";
+import ConsultationPrep from "./dashboard/ConsultationPrep";
 import {
   HeartPulse, LayoutGrid, Bot, ClipboardList, FileText, NotebookPen,
   CalendarDays, MapPin, LineChart, Users, Stethoscope, PanelLeft,
@@ -89,7 +90,8 @@ export default function Dashboard() {
           <div className="dash-content-inner">
             {active === "overview" && <Overview />}
             {active === "assistant" && <AiAssistant />}
-            {active !== "overview" && active !== "assistant" && (
+            {active === "prep" && <ConsultationPrep />}
+            {active !== "overview" && active !== "assistant" && active !=="prep" && (
               <div style={{ color: "var(--muted-fg)", fontSize: 14 }}>
                 "{patientNav.find((n) => n.key === active)?.label}" page — coming soon.
               </div>
