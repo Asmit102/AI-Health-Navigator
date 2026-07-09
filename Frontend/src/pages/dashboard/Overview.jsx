@@ -1,4 +1,4 @@
-import { Activity, CalendarDays, Pill, FileText, MessageSquare } from "lucide-react";
+import { Activity, CalendarDays, Pill, FileText, MessageSquare, TrendingUp } from "lucide-react";
 import Button from "../../components/Button";
 
 const stats = [
@@ -8,6 +8,13 @@ const stats = [
   { icon: FileText, value: 12, label: "Reports filed", bg: "#fef3c7", fg: "#d97706" },
 ];
 
+const activity = [
+  { time: "Today", text: "Logged symptom: mild headache" },
+  { time: "Yesterday", text: "Uploaded: Blood test report (CBC)" },
+  { time: "3 days ago", text: "Visit summary saved — Dr. Mehta" },
+  { time: "1 week ago", text: "Prescription added: Azithromycin" },
+];
+ 
 const medicines = [
   { name: "Paracetamol 500mg", time: "8:00 AM · After breakfast", status: "Taken" },
   { name: "Vitamin D3", time: "8:00 AM · After breakfast", status: "Taken" },
@@ -43,26 +50,48 @@ export default function Overview() {
       </div>
 
       <div className="dash-grid">
-        <div className="panel">
-          <div className="panel-head">
-            <span className="panel-title">Next appointment</span>
-            <span className="pill">Tomorrow, 10:30 AM</span>
+        <div className="dash-col-left">
+          <div className="panel">
+            <div className="panel-head">
+              <span className="panel-title">Next appointment</span>
+              <span className="pill">Tomorrow, 10:30 AM</span>
+            </div>
+
+            <div className="appt-doctor">Dr. Rakesh Mehta — General Physician</div>
+            <div className="appt-sub">Apollo Clinic, Sector 12 · In-person</div>
+
+            <div className="progress-row">
+              <span>Consultation prep</span>
+              <span>70%</span>
+            </div>
+            <div className="progress-track">
+              <div className="progress-fill" style={{ width: "70%" }} />
+            </div>
+
+            <div className="panel-actions">
+              <Button as="button">Finish prep</Button>
+              <Button as="button" variant="outline">Reschedule</Button>
+            </div>
           </div>
 
-          <div className="appt-doctor">Dr. Rakesh Mehta — General Physician</div>
-          <div className="appt-sub">Apollo Clinic, Sector 12 · In-person</div>
+          <div className="panel">
+            <div className="panel-head">
+              <span className="panel-title">
+                <TrendingUp size={16} style={{ marginRight: 8, verticalAlign: -2 }} />
+                Recent health activity
+              </span>
+              <span className="panel-link">View timeline</span>
+            </div>
 
-          <div className="progress-row">
-            <span>Consultation prep</span>
-            <span>70%</span>
-          </div>
-          <div className="progress-track">
-            <div className="progress-fill" style={{ width: "70%" }} />
-          </div>
-
-          <div className="panel-actions">
-            <Button as="button">Finish prep</Button>
-            <Button as="button" variant="outline">Reschedule</Button>
+            <div className="activity-list">
+              {activity.map((a, i) => (
+                <div key={i} className="activity-item">
+                  <span className="activity-dot" />
+                  <div className="activity-time">{a.time}</div>
+                  <div className="activity-text">{a.text}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

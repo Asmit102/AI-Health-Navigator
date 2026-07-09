@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AiAssistant from "./dashboard/AiAssistant";
 import {
   HeartPulse, LayoutGrid, Bot, ClipboardList, FileText, NotebookPen,
   CalendarDays, MapPin, LineChart, Users, Stethoscope, PanelLeft,
@@ -20,10 +21,20 @@ const patientNav = [
 
 export default function Dashboard() {
   const [active, setActive] = useState("overview");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleNavClick = (key) => {
+    setActive(key);
+    setSidebarOpen(false); // mobile pe item click karte hi drawer band ho jaye
+  };
 
   return (
     <div className="dash-layout">
-      <aside className="dash-sidebar">
+      {sidebarOpen && (
+        <div className="dash-overlay" onClick={() => setSidebarOpen(false)} />
+      )}
+
+      <aside className={`dash-sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="dash-brand">
           <div className="brand-logo"><HeartPulse size={20} /></div>
           <div>
@@ -38,7 +49,7 @@ export default function Dashboard() {
             <div
               key={item.key}
               className={`dash-nav-item ${active === item.key ? "active" : ""}`}
-              onClick={() => setActive(item.key)}
+              onClick={() => handleNavClick(item.key)}
             >
               <item.icon size={17} />
               {item.label}
@@ -64,7 +75,9 @@ export default function Dashboard() {
 
       <div className="dash-main">
         <div className="dash-topbar">
-          <button className="dash-icon-btn"><PanelLeft size={16} /></button>
+          <button className="dash-icon-btn" onClick={() => setSidebarOpen((s) => !s)}>
+            <PanelLeft size={16} />
+          </button>
           <div className="dash-search">
             <Search size={16} />
             <input placeholder="Search records, doctors, medicines..." />
@@ -75,7 +88,8 @@ export default function Dashboard() {
         <div className="dash-content">
           <div className="dash-content-inner">
             {active === "overview" && <Overview />}
-            {active !== "overview" && (
+            {active === "assistant" && <AiAssistant />}
+            {active !== "overview" && active !== "assistant" && (
               <div style={{ color: "var(--muted-fg)", fontSize: 14 }}>
                 "{patientNav.find((n) => n.key === active)?.label}" page — coming soon.
               </div>
