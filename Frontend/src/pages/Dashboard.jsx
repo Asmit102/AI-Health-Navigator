@@ -1,6 +1,8 @@
 import { useState } from "react";
 import AiAssistant from "./dashboard/AiAssistant";
 import ConsultationPrep from "./dashboard/ConsultationPrep";
+import ReportExplainer from "./dashboard/ReportExplainer";
+import VisitMemory from "./dashboard/VisitMemory";
 import {
   HeartPulse, LayoutGrid, Bot, ClipboardList, FileText, NotebookPen,
   CalendarDays, MapPin, LineChart, Users, Stethoscope, PanelLeft,
@@ -91,7 +93,9 @@ export default function Dashboard() {
             {active === "overview" && <Overview />}
             {active === "assistant" && <AiAssistant />}
             {active === "prep" && <ConsultationPrep />}
-            {active !== "overview" && active !== "assistant" && active !=="prep" && (
+            {active === "reports" && <ReportExplainer />}
+            {active === "memory" && <VisitMemory />}
+            {active !== "overview" && active !== "assistant" && active !== "prep" && active !== "reports" && active !== "memory" && (
               <div style={{ color: "var(--muted-fg)", fontSize: 14 }}>
                 "{patientNav.find((n) => n.key === active)?.label}" page — coming soon.
               </div>
