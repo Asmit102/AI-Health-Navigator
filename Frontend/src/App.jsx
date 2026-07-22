@@ -1,3 +1,4 @@
+import { ThemeProvider } from "./context/ThemeContext";
 import { useState } from 'react';
 import { Routes, Route } from "react-router-dom";
 
@@ -12,14 +13,15 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="*" element={<NotFound />} />
-
-    </Routes>
+    <ThemeProvider>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </ThemeProvider>
   )
 }
 

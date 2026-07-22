@@ -1,3 +1,4 @@
+import { signupUser } from "../services/authService";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HeartPulse, Mail, Lock, User, Eye, EyeOff, UserRound, Stethoscope } from "lucide-react";
@@ -14,6 +15,8 @@ export default function Signup() {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+  
+  const isFormValid = form.name && form.email && form.password && form.confirmPassword;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,12 +38,11 @@ export default function Signup() {
     setLoading(true);
     try {
       const payload = { ...form, role };
-      // TODO: replace with actual API call, e.g. services/authService.js
-      // const res = await signupUser(payload);
-      console.log("Signup attempt:", payload);
+      const res = await signupUser(payload);
+      console.log("Signup success:", res);
       navigate("/dashboard");
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      setError(err.response?.data?.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -162,7 +164,7 @@ export default function Signup() {
             </div>
           </div>
 
-          <Button size="lg" className="btn-block" as="button" onClick={handleSubmit}>
+          <Button size="lg" className="btn-block" as="button" onClick={handleSubmit} disabled={!isFormValid}>
             {loading ? "Creating account..." : `Create account as ${role === "doctor" ? "Doctor" : "Patient"}`}
           </Button>
         </form>

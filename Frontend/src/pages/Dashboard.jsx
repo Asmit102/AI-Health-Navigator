@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useTheme } from "../context/ThemeContext";
+import { Sun, Moon } from "lucide-react";
+import Profile from "./dashboard/Profile";
 import AiAssistant from "./dashboard/AiAssistant";
 import ConsultationPrep from "./dashboard/ConsultationPrep";
 import ReportExplainer from "./dashboard/ReportExplainer";
@@ -11,9 +14,12 @@ import DoctorDashboard from "./dashboard/DoctorDashboard";
 import {
   HeartPulse, LayoutGrid, Bot, ClipboardList, FileText, NotebookPen,
   CalendarDays, MapPin, LineChart, Users, Stethoscope, PanelLeft,
-  Search, Bell,
+  Search, Bell, Settings,
 } from "lucide-react";
 import Overview from "./dashboard/Overview";
+
+const storedUser = JSON.parse(localStorage.getItem("user"));
+const userRole = storedUser?.role || "patient";
 
 const patientNav = [
   { key: "overview", label: "Overview", icon: LayoutGrid },
@@ -28,8 +34,9 @@ const patientNav = [
 ];
 
 export default function Dashboard() {
-  const [active, setActive] = useState("overview");
+  const [active, setActive] = useState(userRole === "doctor" ? "doctor" : "overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const handleNavClick = (key) => {
     setActive(key);
@@ -51,28 +58,47 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="dash-nav-label">Patient</div>
-        <nav className="dash-nav">
-          {patientNav.map((item) => (
-            <div
-              key={item.key}
-              className={`dash-nav-item ${active === item.key ? "active" : ""}`}
-              onClick={() => handleNavClick(item.key)}
-            >
-              <item.icon size={17} />
-              {item.label}
-            </div>
-          ))}
-        </nav>
+        {userRole === "patient" && (
+          <>
+            <div className="dash-nav-label">Patient</div>
+            <nav className="dash-nav">
+              {patientNav.map((item) => (
+                <div
+                  key={item.key}
+                  className={`dash-nav-item ${active === item.key ? "active" : ""}`}
+                  onClick={() => handleNavClick(item.key)}
+                >
+                  <item.icon size={17} />
+                  {item.label}
+                </div>
+              ))}
+            </nav>
+          </>
+        )}
 
-        <div className="dash-nav-label">Care Team</div>
+        {userRole === "doctor" && (
+          <>
+            <div className="dash-nav-label">Care Team</div>
+            <nav className="dash-nav">
+                <div
+                  className={`dash-nav-item ${active === "doctor" ? "active" : ""}`}
+                  onClick={() => handleNavClick("doctor")}
+                >
+                  <Stethoscope size={17} />
+                  Doctor Dashboard
+            </div>
+            </nav>
+          </>
+        )}
+
+        <div className="dash-nav-label">Account</div>
         <nav className="dash-nav">
             <div
-              className={`dash-nav-item ${active === "doctor" ? "active" : ""}`}
-              onClick={() => handleNavClick("doctor")}
+              className={`dash-nav-item ${active === "profile" ? "active" : ""}`}
+              onClick={() => handleNavClick("profile")}
             >
-              <Stethoscope size={17} />
-              Doctor Dashboard
+              <Settings size={17} />
+              Profile Settings
         </div>
         </nav>
 
@@ -93,6 +119,9 @@ export default function Dashboard() {
             <Search size={16} />
             <input placeholder="Search records, doctors, medicines..." />
           </div>
+          <button className="dash-icon-btn" onClick={toggleTheme}>
+            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
           <button className="dash-icon-btn"><Bell size={16} /></button>
         </div>
 
@@ -108,8 +137,9 @@ export default function Dashboard() {
             {active === "timeline" && <HealthTimeline />}
             {active === "family" && <FamilyRecords />}
             {active === "doctor" && <DoctorDashboard />}
+            {active === "profile" && <Profile />}
 
-            {active !== "overview" && active !== "assistant" && active !== "prep" && active !== "reports" && active !== "memory" && active !== "appointments" && active !== "nearby" && active !== "timeline" && active !== "family" && active!=="doctor" && (
+            {active !== "overview" && active !== "assistant" && active !== "prep" && active !== "reports" && active !== "memory" && active !== "appointments" && active !== "nearby" && active !== "timeline" && active !== "family" && active!=="doctor" && active !== "profile" &&  (
               <div style={{ color: "var(--muted-fg)", fontSize: 14 }}>
                 "{patientNav.find((n) => n.key === active)?.label}" page — coming soon.
               </div>
