@@ -1,3 +1,4 @@
+import { loginUser } from "../services/authService";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HeartPulse, Mail, Lock, Eye, EyeOff } from "lucide-react";
@@ -14,6 +15,8 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const isFormValid = form.email && form.password;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -25,12 +28,13 @@ export default function Login() {
 
     setLoading(true);
     try {
-      // TODO: replace with actual API call, e.g. services/authService.js
-      // const res = await loginUser(form);
-      console.log("Login attempt:", form);
+      const res = await loginUser(form);
+      console.log("Login success:", res);
+      localStorage.setItem("token", res.token);
+      localStorage.setItem("user", JSON.stringify(res.user));
       navigate("/dashboard");
     } catch (err) {
-      setError("Invalid email or password. Please try again.");
+      setError(err.response?.data?.message || "Invalid email or password. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -100,7 +104,7 @@ export default function Login() {
             <Link to="/forgot-password" className="link-primary">Forgot password?</Link>
           </div>
 
-          <Button size="lg" className="btn-block" as="button" onClick={handleSubmit}>
+          <Button size="lg" className="btn-block" as="button" onClick={handleSubmit} disabled={!isFormValid}>
             {loading ? "Signing in..." : "Sign in"}
           </Button>
         </form>
