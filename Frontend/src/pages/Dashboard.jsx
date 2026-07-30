@@ -44,7 +44,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="dash-layout">
+    <div className="dash-layout" data-theme={theme}>
       {sidebarOpen && (
         <div className="dash-overlay" onClick={() => setSidebarOpen(false)} />
       )}

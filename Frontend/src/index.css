@@ -37,12 +37,6 @@
   --gradient-hero: linear-gradient(135deg, #14232a 0%, #0b1418 60%, #101c22 100%);
 }
 
-body {
-  background: var(--bg);
-  color: var(--fg);
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
@@ -372,6 +366,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   display: flex;
   height: 100vh;
   background: var(--bg);
+  color: var(--fg);
   overflow: hidden;
 }
 
