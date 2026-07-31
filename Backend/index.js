@@ -3,6 +3,7 @@ const mongoose = require ("mongoose")
 require("dotenv").config();
 const cors = require("cors"); //backend connection
 const authRoutes = require("./routes/authRoutes");
+const appointmentRoutes = require("./routes/appointmentRoutes");
 
 
 const app = express();
@@ -15,6 +16,7 @@ app.get("/", (req , resp)=>{
 })
 
 app.use("/api/auth", authRoutes);
+app.use("/api/appointments", appointmentRoutes);
 
 // MongoDB se connect karo
 mongoose.connect(process.env.MONGO_URI)

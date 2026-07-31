@@ -132,7 +132,7 @@ export default function Dashboard() {
             {active === "prep" && <ConsultationPrep />}
             {active === "reports" && <ReportExplainer />}
             {active === "memory" && <VisitMemory />}
-            {active === "appointments" && <Appointments />}
+            {active === "appointments" && <Appointments onPrepare={() => handleNavClick("prep")} />}
             {active === "nearby" && <HealthcareNearMe />}
             {active === "timeline" && <HealthTimeline />}
             {active === "family" && <FamilyRecords />}
