@@ -84,7 +84,7 @@ if (process.env.MONGO_URI) {
   console.warn("MONGO_URI not set in environment variables!");
 }
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`AI Health Navigator server listening on port ${PORT}`);
 });
 
