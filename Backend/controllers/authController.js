@@ -22,11 +22,19 @@ const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role,
+      role: role || "patient",
     });
+
+    // JWT token generate karo
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     res.status(201).json({
       message: "User registered successfully",
+      token,
       user: {
         id: user._id,
         name: user.name,
@@ -95,17 +103,22 @@ const getProfile = async (req, res) => {
 // Update logged-in user's profile
 const updateProfile = async (req, res) => {
   try {
-    const { name, phone, dateOfBirth, gender } = req.body;
+    const { name, phone, dateOfBirth, gender, specialty, qualification, experience, clinicAddress, availability } = req.body;
 
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.name = name || user.name;
-    user.phone = phone || user.phone;
-    user.dateOfBirth = dateOfBirth || user.dateOfBirth;
-    user.gender = gender || user.gender;
+    if (name !== undefined) user.name = name;
+    if (phone !== undefined) user.phone = phone;
+    if (dateOfBirth !== undefined) user.dateOfBirth = dateOfBirth;
+    if (gender !== undefined) user.gender = gender;
+    if (specialty !== undefined) user.specialty = specialty;
+    if (qualification !== undefined) user.qualification = qualification;
+    if (experience !== undefined) user.experience = experience;
+    if (clinicAddress !== undefined) user.clinicAddress = clinicAddress;
+    if (availability !== undefined) user.availability = availability;
 
     const updatedUser = await user.save();
 
@@ -119,6 +132,11 @@ const updateProfile = async (req, res) => {
         phone: updatedUser.phone,
         dateOfBirth: updatedUser.dateOfBirth,
         gender: updatedUser.gender,
+        specialty: updatedUser.specialty,
+        qualification: updatedUser.qualification,
+        experience: updatedUser.experience,
+        clinicAddress: updatedUser.clinicAddress,
+        availability: updatedUser.availability,
       },
     });
   } catch (error) {

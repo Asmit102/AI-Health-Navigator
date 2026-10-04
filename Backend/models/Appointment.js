@@ -7,6 +7,10 @@ const appointmentSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    doctor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     doctorName: {
       type: String,
       required: true,
@@ -28,7 +32,7 @@ const appointmentSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "confirmed", "completed", "cancelled"],
+      enum: ["pending", "confirmed", "in-progress", "completed", "cancelled"],
       default: "pending",
     },
   },

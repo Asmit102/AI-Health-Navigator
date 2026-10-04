@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plus, Clock, MapPin, Video, CalendarCheck, X } from "lucide-react";
+import { Plus, Clock, MapPin, X } from "lucide-react";
 import Button from "../../components/Button";
 import { getMyAppointments, createAppointment, deleteAppointment } from "../../services/appointmentService";
 
@@ -196,7 +196,7 @@ export default function Appointments({ onPrepare }) {
               <Button as="button" variant="outline" onClick={() => handleCancel(a._id)}>
                 Cancel
               </Button>
-              <Button as="button" onClick={onPrepare}>Prepare</Button>
+              <Button as="button" onClick={() => onPrepare(a._id)}>Prepare</Button>
             </div>
           </div>
         ))}

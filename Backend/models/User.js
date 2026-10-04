@@ -31,6 +31,26 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["male", "female", "other"],
     },
+    specialty: {
+      type: String,
+      default: "",
+    },
+    qualification: {
+      type: String,
+      default: "",
+    },
+    experience: {
+      type: String,
+      default: "",
+    },
+    clinicAddress: {
+      type: String,
+      default: "",
+    },
+    availability: {
+      type: String,
+      default: "Mon-Sat: 9:00 AM - 5:00 PM",
+    },
   },
   { timestamps: true }
 );

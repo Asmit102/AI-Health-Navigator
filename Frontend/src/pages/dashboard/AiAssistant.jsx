@@ -1,3 +1,4 @@
+import { askAssistant } from "../../services/aiService";
 import { useState, useRef, useEffect } from "react";
 import { Bot, User, Languages, AlertTriangle, Sparkles, Send } from "lucide-react";
 
@@ -23,23 +24,29 @@ export default function AiAssistant() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = (text) => {
+const sendMessage = async (text) => {
     const content = text ?? input;
     if (!content.trim()) return;
 
     setMessages((prev) => [...prev, { role: "user", text: content }]);
     setInput("");
 
-    // TODO: replace with actual AI API call
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "bot",
-          text: "Got it — I've noted that down. This is a placeholder response; the real assistant will connect here once the backend is ready.",
-        },
-      ]);
-    }, 500);
+    // Show a temporary "typing" bubble
+    setMessages((prev) => [...prev, { role: "bot", text: "Thinking...", isTyping: true }]);
+
+    try {
+      const res = await askAssistant(content);
+
+      setMessages((prev) => {
+        const withoutTyping = prev.filter((m) => !m.isTyping);
+        return [...withoutTyping, { role: "bot", text: res.reply }];
+      });
+    } catch {
+      setMessages((prev) => {
+        const withoutTyping = prev.filter((m) => !m.isTyping);
+        return [...withoutTyping, { role: "bot", text: "Sorry, something went wrong. Please try again." }];
+      });
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -57,7 +64,7 @@ export default function AiAssistant() {
           className="lang-toggle"
           onClick={() => setLang((l) => (l === "EN" ? "हिंदी" : "EN"))}
         >
-          <Languages size={14} /> EN · हिंदी
+          <Languages size={14} /> {lang === "EN" ? "EN" : "हिंदी"}
         </button>
       </div>
 

@@ -37,6 +37,7 @@ export default function Dashboard() {
   const [active, setActive] = useState(userRole === "doctor" ? "doctor" : "overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
 
   const handleNavClick = (key) => {
     setActive(key);
@@ -129,10 +130,10 @@ export default function Dashboard() {
           <div className="dash-content-inner">
             {active === "overview" && <Overview />}
             {active === "assistant" && <AiAssistant />}
-            {active === "prep" && <ConsultationPrep />}
+            {active === "prep" && <ConsultationPrep appointmentId={selectedAppointmentId} />}
             {active === "reports" && <ReportExplainer />}
             {active === "memory" && <VisitMemory />}
-            {active === "appointments" && <Appointments onPrepare={() => handleNavClick("prep")} />}
+            {active === "appointments" && (<Appointments onPrepare={(appointmentId) => {setSelectedAppointmentId(appointmentId); handleNavClick("prep");}}/>)}
             {active === "nearby" && <HealthcareNearMe />}
             {active === "timeline" && <HealthTimeline />}
             {active === "family" && <FamilyRecords />}

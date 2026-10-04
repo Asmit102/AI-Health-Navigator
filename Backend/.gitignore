@@ -1,4 +1,12 @@
-PORT=4001
-MONGO_URI=mongodb+srv://asmitm750_db_user:Asmitm102@cluster0.tturztf.mongodb.net/?appName=Cluster0
-JWT_SECRET=yehmerasecretkeyhai12345
-GEMINI_API_KEY=AQ.Ab8RN6JSr6swB-J46yUDM2W2E0DiteIqRDSHau47NX_lkV2LrQ
+node_modules
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.DS_Store
+dist
+coverage

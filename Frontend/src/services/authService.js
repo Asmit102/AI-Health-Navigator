@@ -1,6 +1,9 @@
 import axios from "axios";
+import { BASE_URL, getAuthHeader } from "./apiClient";
 
-const API_URL = "http://localhost:4001/api/auth";
+export { getAuthHeader };
+
+const API_URL = `${BASE_URL}/auth`;
 
 export const signupUser = async (payload) => {
   const response = await axios.post(`${API_URL}/register`, payload);
@@ -13,17 +16,15 @@ export const loginUser = async (payload) => {
 };
 
 export const getProfile = async () => {
-  const token = localStorage.getItem("token");
   const response = await axios.get(`${API_URL}/profile`, {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: getAuthHeader(),
   });
   return response.data;
 };
 
 export const updateProfile = async (data) => {
-  const token = localStorage.getItem("token");
   const response = await axios.put(`${API_URL}/profile`, data, {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: getAuthHeader(),
   });
   return response.data;
 };

@@ -29,7 +29,7 @@ export default function Profile() {
           dateOfBirth: user.dateOfBirth ? user.dateOfBirth.split("T")[0] : "",
           gender: user.gender || "",
         });
-      } catch (err) {
+      } catch {
         setMessage("Failed to load profile.");
       } finally {
         setLoading(false);
@@ -54,7 +54,7 @@ export default function Profile() {
         gender: form.gender,
       });
       setMessage("Profile updated successfully!");
-    } catch (err) {
+    } catch {
       setMessage("Failed to update profile.");
     } finally {
       setSaving(false);

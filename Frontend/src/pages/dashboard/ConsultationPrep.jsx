@@ -1,34 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ClipboardList, CheckCircle2 } from "lucide-react";
 import Button from "../../components/Button";
+import { getPrepForAppointment, updatePrep } from "../../services/prepService";
 
-const initialFields = [
-  { id: 1, question: "What's the main reason for this visit?", value: "Persistent headache and fatigue for the last 5 days." },
-  { id: 2, question: "When did symptoms start and how have they changed?", value: "Started Monday morning. Worse on day 3, slightly better today." },
-  { id: 3, question: "Current medications you're taking?", value: "Paracetamol as needed, Vitamin D3 daily, Cetirizine at night." },
-  { id: 4, question: "Any recent changes (travel, diet, stress)?", value: "" },
-];
+export default function ConsultationPrep({ appointmentId }) {
+  const [prep, setPrep] = useState(null);
+  const [appointment, setAppointment] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-const suggestedQuestions = [
-  "Could this be related to my recent travel or change in sleep?",
-  "Do you recommend any blood tests (CBC, dengue panel)?",
-  "Are there interactions between Cetirizine and my new prescription?",
-  "What warning signs should bring me back sooner?",
-];
+  useEffect(() => {
+    if (!appointmentId) {
+      setLoading(false);
+      return;
+    }
 
-export default function ConsultationPrep() {
-  const [fields, setFields] = useState(initialFields);
+    const fetchPrep = async () => {
+      try {
+        const res = await getPrepForAppointment(appointmentId);
+        setPrep(res.prep);
+        setAppointment(res.appointment);
+      } catch (err) {
+        console.error("Failed to load consultation prep", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPrep();
+  }, [appointmentId]);
 
-  const handleChange = (id, value) => {
-    setFields((prev) => prev.map((f) => (f.id === id ? { ...f, value } : f)));
+  const handleChange = (noteId, value) => {
+    setPrep((prev) => ({
+      ...prev,
+      notes: prev.notes.map((n) => (n._id === noteId ? { ...n, value } : n)),
+    }));
   };
 
   const addNote = () => {
-    setFields((prev) => [
+    setPrep((prev) => ({
       ...prev,
-      { id: Date.now(), question: "Additional note", value: "" },
-    ]);
+      notes: [...prev.notes, { _id: `temp-${Date.now()}`, question: "Additional note", value: "" }],
+    }));
   };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      // Strip temporary IDs before saving - MongoDB will assign real ones
+      const cleanNotes = prep.notes.map(({ question, value }) => ({ question, value }));
+      const res = await updatePrep(prep._id, cleanNotes);
+      setPrep(res.prep);
+    } catch (err) {
+      console.error("Failed to save notes", err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (!appointmentId) {
+    return (
+      <p style={{ color: "var(--muted-fg)" }}>
+        Go to Appointments and click "Prepare" on a specific appointment to get started.
+      </p>
+    );
+  }
+
+  if (loading) return <p style={{ color: "var(--muted-fg)" }}>Loading consultation prep...</p>;
+  if (!prep || !appointment) return <p style={{ color: "var(--muted-fg)" }}>Could not load this consultation.</p>;
 
   return (
     <div>
@@ -39,18 +77,20 @@ export default function ConsultationPrep() {
 
       <div className="panel">
         <div className="prep-panel-head">
-          <span className="prep-doctor-line">Dr. Rakesh Mehta — Tomorrow, 10:30 AM</span>
-          <span className="status-pill">In progress</span>
+          <span className="prep-doctor-line">
+            {appointment.doctorName} — {new Date(appointment.date).toLocaleDateString()}, {appointment.time}
+          </span>
+          <span className="status-pill">{appointment.status}</span>
         </div>
 
-        {fields.map((f) => (
-          <div key={f.id} className="prep-field">
+        {prep.notes.map((f) => (
+          <div key={f._id} className="prep-field">
             <div className="prep-question">{f.question}</div>
             <textarea
               className="prep-textarea"
               placeholder="Type your answer..."
               value={f.value}
-              onChange={(e) => handleChange(f.id, e.target.value)}
+              onChange={(e) => handleChange(f._id, e.target.value)}
               rows={2}
             />
           </div>
@@ -67,8 +107,8 @@ export default function ConsultationPrep() {
           Suggested questions for your doctor
         </div>
         <div className="question-list">
-          {suggestedQuestions.map((q) => (
-            <div key={q} className="question-item">
+          {prep.suggestedQuestions.map((q, i) => (
+            <div key={i} className="question-item">
               <CheckCircle2 size={16} />
               {q}
             </div>
@@ -78,7 +118,9 @@ export default function ConsultationPrep() {
 
       <div className="prep-footer-actions">
         <Button as="button" variant="outline">Download summary</Button>
-        <Button as="button">Share with doctor</Button>
+        <Button as="button" onClick={handleSave} disabled={saving}>
+          {saving ? "Saving..." : "Save notes"}
+        </Button>
       </div>
     </div>
   );
